@@ -1,0 +1,42 @@
+name: HTTP Proxy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  proxy:
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 350
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show environment
+        run: |
+          python3 --version
+          ssh -V
+
+      - name: Start proxy
+        env:
+          PROXY_USER: ${{ secrets.PROXY_USER }}
+          PROXY_PASS: ${{ secrets.PROXY_PASS }}
+          PROXY_PORT: 8080
+        run: |
+          nohup python3 proxy.py > proxy.log 2>&1 &
+          echo $! > proxy.pid
+
+          sleep 2
+
+          cat proxy.log
+
+      - name: Start Pinggy TCP tunnel
+        run: |
+          ssh \
+            -o StrictHostKeyChecking=no \
+            -o ServerAliveInterval=30 \
+            -o ServerAliveCountMax=3 \
+            -p 443 \
+            -R 0:localhost:8080 \
+            tcp@free.pinggy.io
