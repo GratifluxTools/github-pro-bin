@@ -1,0 +1,61 @@
+name: Pinggy Free Rotating Proxy
+
+on:
+  workflow_dispatch:
+    inputs:
+      auto_switch:
+        description: "55分ごとに後継Pinggyトンネルを起動し、DNS切替後に旧トンネルを停止する"
+        required: true
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+# 同時に複数のworkflowを動かさない。新規起動時は旧workflowをCancelし、cleanupさせる。
+concurrency:
+  group: pinggy-free-proxy
+  cancel-in-progress: true
+
+jobs:
+  proxy:
+    name: Pinggy proxy with DNS rotation
+    runs-on: ubuntu-latest
+    # Orchestrator ends normally at 5h55. This is only a hard safety limit so cleanup can run.
+    timeout-minutes: 360
+    env:
+      PROXY_USER: ${{ secrets.PROXY_USER }}
+      PROXY_PASS: ${{ secrets.PROXY_PASS }}
+      CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+      CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          for key in PROXY_USER PROXY_PASS CF_API_TOKEN CF_ZONE_ID; do
+            if [[ -z "${!key:-}" ]]; then
+              echo "::error::Required repository secret is missing: ${key}"
+              exit 1
+            fi
+          done
+          command -v ssh
+          python3 -m py_compile proxy.py .github/scripts/pinggy_rotation.py
+          python3 -m unittest discover -s tests -v
+
+      - name: Run rotating Pinggy tunnel
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/pinggy_rotation.py \
+            --auto-switch '${{ inputs.auto_switch }}' \
+            --runtime-seconds 21300 \
+            --rotation-seconds 3300
