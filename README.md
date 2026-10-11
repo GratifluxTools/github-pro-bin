@@ -1,31 +1,36 @@
 # github-pro-bin
 
-## Pinggy Free rotating proxy workflow
+## Actions workflows
 
-`.github/workflows/pinggy-rotation.yml` は手動起動する、無料Pinggy TCPトンネルのローテーションworkflowです。起動時の `auto_switch` を `true` にすると、55分ごとに次のPinggyトンネルを先に確立し、`proxy.rokko-st.com` のDNS CNAMEを新しいPinggyホストへ更新してから旧トンネルを停止します。標準の最大実行時間は5時間55分です。`false` の場合は切替を行わず、最初のPinggy接続が切れるか最大実行時間に達した時点で終了します。
+### HTTP Proxy
 
-### 必要なGitHub Actions Secrets
+既存の`.github/workflows/proxy.yml`。`proxy.py`を起動し、Pinggy Free TCP tunnelを作ります。
 
-Repository **Settings → Secrets and variables → Actions** に以下を設定してください。
+### HTTP Proxy with DNS
+
+`.github/workflows/http-proxy-with-dns.yml`を手動実行すると、同じ`proxy.py`とPinggy Freeを使い、Pinggyが出力するTCP endpointのホスト名をCloudflareの`proxy.rokko-st.com`に一時反映します。DNSレコードの更新方式は、前の`rokko-proxy-actions`にあったCloudflare API upsertを参考にしています。
+
+Pinggy Freeは1セッション最大約60分のため、workflowはPinggy接続終了後に停止します。正常終了またはActionsのCancel時、DNSレコードを元の状態へ戻し、Pinggy SSHトンネルと`proxy.py`を停止します。job timeoutは後処理用の70分です。
+
+#### 必要なGitHub Actions Secrets
+
+Repository **Settings → Secrets and variables → Actions** に設定してください。
 
 - `PROXY_USER` — プロキシユーザー名
 - `PROXY_PASS` — プロキシパスワード
-- `CF_API_TOKEN` — Cloudflare API Token。`rokko-st.com` Zoneに対する **DNS Read** と **DNS Write** のみを付与
+- `CF_API_TOKEN` — `rokko-st.com` Zoneの **Zone Read、DNS Read、DNS Write** 権限を持つCloudflare API Token
 - `CF_ZONE_ID` — `rokko-st.com` のZone ID
 
-`CF_API_TOKEN` はログへ出しません。Cloudflare APIで `proxy.rokko-st.com` の既存DNSレコードを読み、ちょうど1件のCNAMEであることを確認してから更新します。A/AAAAなど競合レコードがある場合は安全のため失敗し、削除・置換はしません。既存CNAMEがなければ一時CNAMEを作成します。
+workflowはCloudflare APIでゾーンと`proxy.rokko-st.com`のレコードを照合します。対象名のA/CNAMEが1件ならDNS-onlyのCNAMEへ切り替えます。単一Aレコードの場合は一時削除してCNAMEを作り、終了時に元レコードを復元します。元がCNAMEなら内容とproxy設定を終了時に戻します。競合レコードや複数レコードがあればDNSを変更せず失敗します。
 
-Pinggy接続中はCNAMEを **DNS-only（Cloudflareプロキシ無効）**、TTL 60秒で設定します。各ローテーションでは旧DNSキャッシュの猶予後に旧Pinggyトンネルを停止します。現時点の公開DNSはCloudflare経由でTTL 300秒のA/AAAA応答です。初回切替直後は既にキャッシュされた古いCloudflare応答が最大約5分残る可能性があります。Cloudflare APIで対象名に単独のAレコードが見つかった場合は、そのAレコードを一時削除してCNAMEを作り、通常終了・workflow cancel時に元のAレコード設定を再作成します。単独のCNAMEなら内容を一時変更して終了時に元へ戻します。事前レコードがなければ一時CNAMEを作成して終了時に削除します。複数レコードやAAAAなど競合があれば変更せず失敗します。
+#### クライアントの接続先
 
-### クライアントの接続先
+ActionsログとSummaryに、例のように表示します。
 
-DNSはホスト名をPinggyへ向けますが、**DNSにはTCPポート番号を格納できません**。Pinggy FreeはトンネルごとにTCPポートを割り当てるため、接続先はホスト名だけの `proxy.rokko-st.com:8080` には固定できません。Actionsの実行ログとSummaryに表示される `proxy.rokko-st.com:<割当ポート>` を、切替の都度クライアントのプロキシポートへ設定してください。端末が自動的にポートを追従する仕組みではありません。
+```text
+proxy.rokko-st.com:41639
+```
 
-### 停止・失敗時
+DNSはホスト名をPinggyの`*.run.pinggy-free.link`へ向けますが、DNSではTCPポートを転送できません。Pinggy Freeが毎回割り当てるポートをプロキシ設定に指定してください。**`:8080`には固定できず、端末側のプロキシポートをActionsに表示される値へ設定する必要があります。**
 
-- GitHub Actionsの **Cancel workflow** はPythonオーケストレーターへ終了シグナルを送り、全Pinggy SSHプロセスグループと `proxy.py` を停止し、可能な範囲でDNSを元へ戻します。
-- 実行時間の上限到達時は同じcleanupを行います。Workflow jobの6時間timeoutはcleanup用の最後の安全弁です。
-- Pinggy Freeが同一アカウント・送信元からの同時接続を拒否する、DNS API権限不足、Cloudflare側に競合レコードがある等の場合、handoffは失敗し、Actionsログに理由を表示します。
-- 受信先のDNSはworkflow実行中だけPinggy向けです。Actionsが停止している間は元のDNSレコードへ戻ります。
-
-関連ソース: `proxy.py`、`.github/scripts/pinggy_rotation.py`、`.github/workflows/pinggy-rotation.yml`。
+Cloudflare DNSのキャッシュ済み応答は切替直後もしばらく残る場合があります。workflowはPinggy使用中のDNSをDNS-onlyにしてTTL 60秒を指定します。現在の公開応答TTLは300秒なので、初回切替では一部DNSキャッシュが最大約5分間、古い応答を返す可能性があります。

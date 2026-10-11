@@ -1,0 +1,52 @@
+name: HTTP Proxy with DNS
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# DNS復元と新規実行が競合しないよう、実行中runを自動キャンセルしない。
+concurrency:
+  group: http-proxy-with-dns
+  cancel-in-progress: false
+
+jobs:
+  proxy:
+    name: HTTP Proxy + Pinggy + Cloudflare DNS
+    runs-on: ubuntu-latest
+    # Pinggy Free tunnels expire after 60 minutes; leave time for graceful DNS/process cleanup.
+    timeout-minutes: 70
+    env:
+      PROXY_USER: ${{ secrets.PROXY_USER }}
+      PROXY_PASS: ${{ secrets.PROXY_PASS }}
+      CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+      CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Validate configuration and tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          for key in PROXY_USER PROXY_PASS CF_API_TOKEN CF_ZONE_ID; do
+            if [[ -z "${!key:-}" ]]; then
+              echo "::error::Required repository secret is missing: ${key}"
+              exit 1
+            fi
+          done
+          command -v ssh
+          python3 -m py_compile proxy.py .github/scripts/pinggy_dns_proxy.py
+          python3 -m unittest discover -s tests -v
+
+      - name: Start proxy, Pinggy TCP tunnel, and DNS alias
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/pinggy_dns_proxy.py
