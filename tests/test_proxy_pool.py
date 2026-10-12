@@ -61,7 +61,7 @@ class ProxyPoolTests(unittest.TestCase):
             module.dispatch_successor("owner/repo", "control-token", 2, "123456")
         self.assertEqual(api.call_args.args[2], "actions/workflows/proxy-slot-2.yml/dispatches")
         self.assertEqual(api.call_args.args[3], "POST")
-        self.assertEqual(api.call_args.args[4]["inputs"]["handoff_from"], "123456")
+        self.assertEqual(api.call_args.args[4]["inputs"], {"handoff_from": "123456"})
 
 
 if __name__ == "__main__":

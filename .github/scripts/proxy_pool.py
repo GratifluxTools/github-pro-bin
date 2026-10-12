@@ -579,8 +579,10 @@ def read_slot(repo: str, token: str, slot: int) -> dict | None:
 def dispatch_successor(repo: str, control_token: str, slot: int, old_run: str) -> None:
     if not control_token:
         raise RuntimeError("Set PROXY_CONTROL_TOKEN with Actions:write permission to enable automatic handoff")
-    body = {"ref": "main", "inputs": {"slot": str(slot), "handoff_from": old_run}}
     workflow_file = f"proxy-slot-{slot}.yml"
+    # The dedicated workflow's slot is fixed by its filename. Its only declared
+    # workflow_dispatch input is handoff_from; GitHub rejects undeclared inputs.
+    body = {"ref": "main", "inputs": {"handoff_from": old_run}}
     status, result = github_api(repo, control_token, f"actions/workflows/{workflow_file}/dispatches", "POST", body)
     if status != 204:
         raise RuntimeError(f"Could not start {workflow_file} (HTTP {status}): {result.get('message', result)}")
