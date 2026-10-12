@@ -1,0 +1,64 @@
+name: Proxy Pool Worker (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      slot:
+        description: Fixed proxy slot number
+        required: true
+        type: string
+      handoff_from:
+        description: Previous workflow run ID; blank for a manual slot start
+        required: false
+        type: string
+        default: ""
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  proxy:
+    name: Proxy slot ${{ inputs.slot }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      PROXY_USER: ${{ secrets.PROXY_USER }}
+      PROXY_PASS: ${{ secrets.PROXY_PASS }}
+      CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+      CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+      PROXY_CONTROL_TOKEN: ${{ secrets.PROXY_CONTROL_TOKEN }}
+      GITHUB_TOKEN: ${{ github.token }}
+      PROXY_POOL_SLOT: ${{ inputs.slot }}
+      PROXY_POOL_HANDOFF_FROM: ${{ inputs.handoff_from }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Validate configuration and tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          for key in PROXY_USER PROXY_PASS CF_API_TOKEN CF_ZONE_ID PROXY_CONTROL_TOKEN; do
+            if [[ -z "${!key:-}" ]]; then
+              echo "::error::Required repository Actions secret is missing: ${key}"
+              exit 1
+            fi
+          done
+          python3 -m py_compile proxy.py .github/scripts/proxy_pool.py
+          python3 -m unittest discover -s tests -v
+
+      - name: Start proxy slot
+        shell: bash
+        run: python3 .github/scripts/proxy_pool.py
+
+      - name: Cancel-safe slot and DNS cleanup
+        if: always()
+        continue-on-error: true
+        shell: bash
+        run: python3 .github/scripts/proxy_pool.py --cleanup-only

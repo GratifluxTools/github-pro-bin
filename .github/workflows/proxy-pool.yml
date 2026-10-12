@@ -1,0 +1,51 @@
+name: HTTP Proxy Pool
+
+on:
+  workflow_dispatch:
+    inputs: {}
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  allocate:
+    name: Allocate lowest available slot
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+      CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+      PROXY_CONTROL_TOKEN: ${{ secrets.PROXY_CONTROL_TOKEN }}
+      GITHUB_TOKEN: ${{ github.token }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Validate configuration and tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          for key in CF_API_TOKEN CF_ZONE_ID PROXY_CONTROL_TOKEN; do
+            if [[ -z "${!key:-}" ]]; then
+              echo "::error::Required repository Actions secret is missing: ${key}"
+              exit 1
+            fi
+          done
+          python3 -m py_compile .github/scripts/proxy_pool.py
+          python3 -m unittest discover -s tests -v
+
+      - name: Dispatch dedicated slot workflow
+        shell: bash
+        run: python3 .github/scripts/proxy_pool.py --dispatch-auto
+
+      - name: Cancel-safe allocation cleanup
+        if: always()
+        continue-on-error: true
+        shell: bash
+        run: python3 .github/scripts/proxy_pool.py --cleanup-only

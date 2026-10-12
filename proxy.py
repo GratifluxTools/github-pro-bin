@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
 import base64
+import json
 import os
 import select
 import socket
 import threading
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import urllib.parse
 
 
@@ -16,6 +18,34 @@ PROXY_PASS = os.environ.get("PROXY_PASS", "")
 
 BUFFER_SIZE = 64 * 1024
 TIMEOUT = 30
+METRICS_HOST = "127.0.0.1"
+METRICS_PORT = 8081
+_metrics_lock = threading.Lock()
+_active_connections = 0
+
+
+class MetricsHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        if self.path != "/metrics":
+            self.send_error(404)
+            return
+        with _metrics_lock:
+            active = _active_connections
+        body = json.dumps({"active_connections": active}).encode("utf-8")
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Cache-Control", "no-store")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+    def log_message(self, _format, *_args):
+        return
+
+
+def _metrics_server():
+    server = ThreadingHTTPServer((METRICS_HOST, METRICS_PORT), MetricsHandler)
+    server.serve_forever()
 
 
 def send_error(client, code, message):
@@ -134,9 +164,11 @@ def relay(client, remote):
 
 
 def handle_client(client, address):
-    client.settimeout(TIMEOUT)
-
+    global _active_connections
+    with _metrics_lock:
+        _active_connections += 1
     try:
+        client.settimeout(TIMEOUT)
         data = b""
 
         while b"\r\n\r\n" not in data:
@@ -303,9 +335,12 @@ def handle_client(client, address):
             client.close()
         except Exception:
             pass
+        with _metrics_lock:
+            _active_connections = max(0, _active_connections - 1)
 
 
 def main():
+    threading.Thread(target=_metrics_server, daemon=True).start()
     server = socket.socket(
         socket.AF_INET,
         socket.SOCK_STREAM
