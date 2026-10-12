@@ -1,0 +1,22 @@
+name: HTTP Proxy Slot 2
+
+on:
+  workflow_dispatch:
+    inputs:
+      handoff_from:
+        description: "自動引継ぎ元run ID（手動起動では空欄）"
+        type: string
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  proxy:
+    uses: ./.github/workflows/proxy-pool-worker.yml
+    with:
+      slot: "2"
+      handoff_from: ${{ inputs.handoff_from }}
+    secrets: inherit

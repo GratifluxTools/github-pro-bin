@@ -56,6 +56,13 @@ class ProxyPoolTests(unittest.TestCase):
         self.assertEqual(reader.call_count, 2)
         self.assertEqual(writer.call_count, 2)
 
+    def test_successor_dispatch_targets_dedicated_slot_workflow(self):
+        with patch.object(module, "github_api", return_value=(204, {})) as api:
+            module.dispatch_successor("owner/repo", "control-token", 2, "123456")
+        self.assertEqual(api.call_args.args[2], "actions/workflows/proxy-slot-2.yml/dispatches")
+        self.assertEqual(api.call_args.args[3], "POST")
+        self.assertEqual(api.call_args.args[4]["inputs"]["handoff_from"], "123456")
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -2,31 +2,18 @@ name: HTTP Proxy Pool
 
 on:
   workflow_dispatch:
-    inputs:
-      slot:
-        description: "新規起動はauto（未使用の最小番号）。自動handoffでは番号を引き継ぎます。"
-        type: choice
-        options: [auto, "1", "2", "3"]
-        default: auto
-        required: true
-      handoff_from:
-        description: "自動handoff元run ID（通常は空欄のまま）"
-        type: string
-        required: false
-        default: ""
+    inputs: {}
 
 permissions:
   contents: write
   actions: read
 
 jobs:
-  proxy:
-    name: Proxy pool slot (1-3)
+  allocate:
+    name: Allocate lowest available slot
     runs-on: ubuntu-latest
-    timeout-minutes: 360
+    timeout-minutes: 30
     env:
-      PROXY_USER: ${{ secrets.PROXY_USER }}
-      PROXY_PASS: ${{ secrets.PROXY_PASS }}
       CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
       CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
       PROXY_CONTROL_TOKEN: ${{ secrets.PROXY_CONTROL_TOKEN }}
@@ -44,24 +31,21 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for key in PROXY_USER PROXY_PASS CF_API_TOKEN CF_ZONE_ID PROXY_CONTROL_TOKEN; do
+          for key in CF_API_TOKEN CF_ZONE_ID PROXY_CONTROL_TOKEN; do
             if [[ -z "${!key:-}" ]]; then
               echo "::error::Required repository Actions secret is missing: ${key}"
               exit 1
             fi
           done
-          python3 -m py_compile proxy.py .github/scripts/proxy_pool.py
+          python3 -m py_compile .github/scripts/proxy_pool.py
           python3 -m unittest discover -s tests -v
 
-      - name: Start proxy pool slot
+      - name: Dispatch dedicated slot workflow
         shell: bash
-        run: |
-          set -euo pipefail
-          python3 .github/scripts/proxy_pool.py
+        run: python3 .github/scripts/proxy_pool.py --dispatch-auto
 
-      - name: Cancel-safe slot and DNS cleanup
+      - name: Cancel-safe allocation cleanup
         if: always()
         continue-on-error: true
         shell: bash
-        run: |
-          python3 .github/scripts/proxy_pool.py --cleanup-only
+        run: python3 .github/scripts/proxy_pool.py --cleanup-only

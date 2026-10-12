@@ -12,13 +12,15 @@
 
 ### HTTP Proxy Pool
 
-`.github/workflows/proxy-pool.yml`。学内ポータルのプロキシ一覧と連携する最大3台のプールです。手動起動では`slot=auto`のままにしてください。実行中スロットをGitHub Contents APIのSHA compare-and-swapで確認し、`proxy1.rokko-st.com`から未使用の最小番号を割り当てます。3枠が全て稼働中なら新規runは安全に失敗します。
+`.github/workflows/proxy-pool.yml`はallocatorです。手動実行するとGitHub Contents APIのSHA compare-and-swapで稼働slotを確認し、`proxy1.rokko-st.com`から未使用の最小番号を予約して、その番号専用のworkflowをdispatchします。3枠が全て稼働中なら新規runは安全に失敗します。
 
-稼働確認後、該当サブドメインをPinggy Freeの実際の割当ホストへDNS-only CNAMEで向け、ポート・速度・接続数・開始時刻・終了予測を`proxy-pool.json`へ掲載します。各runは約10分ごとに速度/接続数と更新時刻を更新します。速度はCloudflare download testまでの参考Mbps、接続数はproxy processで観測する同時client session数です。速度テストが失敗した場合は`null`となり、サイトは「計測中」と表示します。
+実働するslotは3つの独立したActions workflowです: `HTTP Proxy Slot 1`、`HTTP Proxy Slot 2`、`HTTP Proxy Slot 3`。必要ならActions画面から個別に手動起動もできます。その場合は固定番号のslotを使います。通常は`HTTP Proxy Pool`を起動すると最小の空き番号を選びます。
 
-各Pinggy Free接続は最大約60分です。55分経過時（またはSSH tunnelが先に切れた時）に同じslot番号の後継workflowを起動します。後継が接続・DNS切替し、一覧へonline状態を掲載するまで旧runは待機し、掲載後にDNS TTL分だけ猶予を置いてSSH tunnelと`proxy.py`を停止します。各runは短時間で終了し、後継へ引き継いで連続稼働します。
+稼働確認後、該当サブドメインをPinggy Freeの実際の割当ホストへDNS-only CNAMEで向け、ポート・速度・接続数・開始時刻・終了予測を`proxy-pool.json`へ掲載します。各slot workerは約10分ごとに速度/接続数と更新時刻を更新します。速度はCloudflare download testまでの参考Mbps、接続数はproxy processで観測する同時client session数です。速度テストが失敗した場合は`null`となり、サイトは「計測中」と表示します。
 
-GitHub Actionsの**Cancel workflow**はPython supervisorのsignal処理で子プロセスグループを停止し、加えて`if: always()` cleanup stepがslot状態、未完了後継run、DNSを確認して後始末します。ユーザーが後継Actionだけを個別Cancelした場合は、親Actionが引継ぎタイムアウト後に終了処理をします。
+各Pinggy Free接続は最大約60分です。55分経過時（またはSSH tunnelが先に切れた時）に同じ番号の独立した`HTTP Proxy Slot N` workflowを後継として起動します。後継が接続・DNS切替し、一覧へonline状態を掲載するまで旧runは待機し、掲載後にDNS TTL分だけ猶予を置いて旧runのSSH tunnelと`proxy.py`を停止します。各runが終了後、後継workflowへ引き継いで連続稼働します。
+
+GitHub Actionsの**Cancel workflow**は各slot workflow内のPython supervisorが子プロセスグループを停止し、さらに`if: always()` cleanup stepがslot状態、未完了後継run、DNSを確認して後始末します。allocator workflowをCancelした場合も、まだ公開前のslot予約とdispatch済みの子runをcleanupします。
 
 #### 必要なGitHub Actions Secrets
 

@@ -580,10 +580,36 @@ def dispatch_successor(repo: str, control_token: str, slot: int, old_run: str) -
     if not control_token:
         raise RuntimeError("Set PROXY_CONTROL_TOKEN with Actions:write permission to enable automatic handoff")
     body = {"ref": "main", "inputs": {"slot": str(slot), "handoff_from": old_run}}
-    status, result = github_api(repo, control_token, "actions/workflows/proxy-pool.yml/dispatches", "POST", body)
+    workflow_file = f"proxy-slot-{slot}.yml"
+    status, result = github_api(repo, control_token, f"actions/workflows/{workflow_file}/dispatches", "POST", body)
     if status != 204:
-        raise RuntimeError(f"Could not start successor workflow (HTTP {status}): {result.get('message', result)}")
-    print(f"[HANDOFF] started successor workflow for proxy{slot}.{ZONE}", flush=True)
+        raise RuntimeError(f"Could not start {workflow_file} (HTTP {status}): {result.get('message', result)}")
+    print(f"[HANDOFF] started workflow {workflow_file} for proxy{slot}.{ZONE}", flush=True)
+
+
+def dispatch_initial_pool_slot() -> int:
+    """Reserve the lowest free slot, then start its dedicated worker workflow."""
+    repo, token, current = github_context()
+    control = os.environ.get("PROXY_CONTROL_TOKEN", "").strip()
+    if not control:
+        raise RuntimeError("Set PROXY_CONTROL_TOKEN with Actions:write permission")
+    dns = CloudflareDNS()
+    slot, reservation = reserve_slot(repo, token, "auto", "")
+    baseline = reservation.get("baseline") or dns.snapshot(f"proxy{slot}.{ZONE}")
+    save_baseline(repo, token, slot, baseline, "")
+    print(f"[ALLOCATOR] reserved the lowest available slot proxy{slot}.{ZONE}", flush=True)
+    dispatch_successor(repo, control, slot, current)
+
+    deadline = time.monotonic() + HANDOFF_WAIT
+    while not STOP.is_set() and time.monotonic() < deadline:
+        entry = read_slot(repo, token, slot)
+        if entry and str(entry.get("run_id")) != current and entry.get("status") == "online":
+            print(f"[ALLOCATOR] dedicated slot workflow published proxy{slot}.{ZONE}", flush=True)
+            return 0
+        STOP.wait(2)
+    if STOP.is_set():
+        return 130
+    raise RuntimeError(f"Dedicated slot workflow did not publish proxy{slot}.{ZONE} before timeout")
 
 
 def upstream_cancelled(repo: str, token: str, handoff_from: str) -> bool:
@@ -728,8 +754,12 @@ def main() -> int:
     signal.signal(signal.SIGHUP, signal_handler)
     if len(sys.argv) > 1 and sys.argv[1] == "--cleanup-only":
         return cleanup_only()
+    if len(sys.argv) > 1 and sys.argv[1] == "--dispatch-auto":
+        return dispatch_initial_pool_slot()
     repo, token, current = github_context()
     requested, handoff_from = get_trigger_inputs()
+    requested = os.environ.get("PROXY_POOL_SLOT", "").strip() or requested
+    handoff_from = os.environ.get("PROXY_POOL_HANDOFF_FROM", handoff_from).strip()
     if handoff_from and upstream_cancelled(repo, token, handoff_from):
         print("[STOP] parent workflow was cancelled before successor startup", flush=True)
         return 0
