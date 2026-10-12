@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-10-12T23:15:24Z",
+  "generated_at": "2026-10-12T23:18:16Z",
   "refresh_seconds": 600,
   "slots": {
     "2": {
@@ -34,6 +34,14 @@
         "record": null,
         "record_id": null
       }
+    },
+    "1": {
+      "run_id": "38321409373",
+      "status": "starting",
+      "server": "proxy1.rokko-st.com",
+      "started_at": "2026-10-12T23:18:16Z",
+      "updated_at": "2026-10-12T23:18:16Z",
+      "dns_baseline": null
     }
   },
   "proxies": [
@@ -60,5 +68,5 @@
       "status": "online"
     }
   ],
-  "updated_at": "2026-10-12T23:15:24Z"
+  "updated_at": "2026-10-12T23:18:16Z"
 }
