@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-10-17T21:08:56Z",
+  "generated_at": "2026-10-17T21:08:57Z",
   "refresh_seconds": 600,
   "slots": {
     "2": {
@@ -10,7 +10,7 @@
       "port": 34641,
       "pinggy_host": "dafik-57-154-5-67.run.pinggy-free.link",
       "started_at": "2026-10-17T20:13:44Z",
-      "updated_at": "2026-10-17T21:08:56Z",
+      "updated_at": "2026-10-17T21:08:57Z",
       "expires_at": "2026-10-17T21:13:44Z",
       "speed_mbps": 44.25,
       "connections": 0,
@@ -21,7 +21,11 @@
       "pending": {
         "run_id": "39069695946",
         "status": "starting",
-        "updated_at": "2026-10-17T21:08:56Z"
+        "updated_at": "2026-10-17T21:08:56Z",
+        "dns_baseline": {
+          "record": null,
+          "record_id": null
+        }
       }
     },
     "1": {
@@ -61,9 +65,9 @@
       "connections": 0,
       "started_at": "2026-10-17T20:13:44Z",
       "expires_at": "2026-10-17T21:13:44Z",
-      "updated_at": "2026-10-17T21:08:56Z",
+      "updated_at": "2026-10-17T21:08:57Z",
       "status": "online"
     }
   ],
-  "updated_at": "2026-10-17T21:08:56Z"
+  "updated_at": "2026-10-17T21:08:57Z"
 }
