@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-10-18T07:22:22Z",
+  "generated_at": "2026-10-18T07:26:55Z",
   "refresh_seconds": 600,
   "slots": {
     "2": {
@@ -10,7 +10,7 @@
       "port": 40089,
       "pinggy_host": "llvjf-20-169-76-183.run.pinggy-free.link",
       "started_at": "2026-10-18T07:16:51Z",
-      "updated_at": "2026-10-18T07:16:51Z",
+      "updated_at": "2026-10-18T07:26:55Z",
       "expires_at": "2026-10-18T08:16:51Z",
       "speed_mbps": 46.45,
       "connections": 0,
@@ -56,9 +56,9 @@
       "connections": 0,
       "started_at": "2026-10-18T07:16:51Z",
       "expires_at": "2026-10-18T08:16:51Z",
-      "updated_at": "2026-10-18T07:16:51Z",
+      "updated_at": "2026-10-18T07:26:55Z",
       "status": "online"
     }
   ],
-  "updated_at": "2026-10-18T07:22:22Z"
+  "updated_at": "2026-10-18T07:26:55Z"
 }
