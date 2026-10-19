@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-10-19T16:22:59Z",
+  "generated_at": "2026-10-19T16:23:01Z",
   "refresh_seconds": 600,
   "slots": {
     "2": {
@@ -26,7 +26,7 @@
       "port": 46091,
       "pinggy_host": "advat-20-169-100-174.run.pinggy-free.link",
       "started_at": "2026-10-19T15:27:29Z",
-      "updated_at": "2026-10-19T16:22:59Z",
+      "updated_at": "2026-10-19T16:23:01Z",
       "expires_at": "2026-10-19T16:27:29Z",
       "speed_mbps": 35.9,
       "connections": 0,
@@ -37,7 +37,11 @@
       "pending": {
         "run_id": "39284929992",
         "status": "starting",
-        "updated_at": "2026-10-19T16:22:59Z"
+        "updated_at": "2026-10-19T16:22:59Z",
+        "dns_baseline": {
+          "record": null,
+          "record_id": null
+        }
       }
     }
   },
@@ -50,7 +54,7 @@
       "connections": 0,
       "started_at": "2026-10-19T15:27:29Z",
       "expires_at": "2026-10-19T16:27:29Z",
-      "updated_at": "2026-10-19T16:22:59Z",
+      "updated_at": "2026-10-19T16:23:01Z",
       "status": "online"
     },
     {
@@ -65,5 +69,5 @@
       "status": "online"
     }
   ],
-  "updated_at": "2026-10-19T16:22:59Z"
+  "updated_at": "2026-10-19T16:23:01Z"
 }
