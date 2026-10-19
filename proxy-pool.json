@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-10-19T23:44:11Z",
+  "generated_at": "2026-10-19T23:45:26Z",
   "refresh_seconds": 600,
   "slots": {
     "2": {
@@ -26,13 +26,18 @@
       "port": 42379,
       "pinggy_host": "teiku-52-234-45-178.run.pinggy-free.link",
       "started_at": "2026-10-19T22:50:14Z",
-      "updated_at": "2026-10-19T23:40:27Z",
+      "updated_at": "2026-10-19T23:45:26Z",
       "expires_at": "2026-10-19T23:50:14Z",
       "speed_mbps": 56.39,
       "connections": 0,
       "dns_baseline": {
         "record": null,
         "record_id": null
+      },
+      "pending": {
+        "run_id": "39343510314",
+        "status": "starting",
+        "updated_at": "2026-10-19T23:45:26Z"
       }
     }
   },
@@ -45,7 +50,7 @@
       "connections": 0,
       "started_at": "2026-10-19T22:50:14Z",
       "expires_at": "2026-10-19T23:50:14Z",
-      "updated_at": "2026-10-19T23:40:27Z",
+      "updated_at": "2026-10-19T23:45:26Z",
       "status": "online"
     },
     {
@@ -60,5 +65,5 @@
       "status": "online"
     }
   ],
-  "updated_at": "2026-10-19T23:44:11Z"
+  "updated_at": "2026-10-19T23:45:26Z"
 }
