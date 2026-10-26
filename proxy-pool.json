@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-10-26T09:52:33Z",
+  "generated_at": "2026-10-26T09:52:37Z",
   "refresh_seconds": 600,
   "slots": {
     "1": {
@@ -36,28 +36,19 @@
       }
     },
     "3": {
-      "run_id": "40295866869",
+      "run_id": "40302925227",
       "status": "online",
       "server": "proxy3.rokko-st.com",
-      "port": 32863,
-      "pinggy_host": "ipwtc-172-174-110-225.run.pinggy-free.link",
-      "started_at": "2026-10-26T08:57:18Z",
-      "updated_at": "2026-10-26T09:52:33Z",
-      "expires_at": "2026-10-26T09:57:18Z",
-      "speed_mbps": 55.95,
+      "port": 37547,
+      "pinggy_host": "tnisv-48-217-25-145.run.pinggy-free.link",
+      "started_at": "2026-10-26T09:52:37Z",
+      "updated_at": "2026-10-26T09:52:37Z",
+      "expires_at": "2026-10-26T10:52:37Z",
+      "speed_mbps": 76.2,
       "connections": 0,
       "dns_baseline": {
         "record": null,
         "record_id": null
-      },
-      "pending": {
-        "run_id": "40302925227",
-        "status": "starting",
-        "updated_at": "2026-10-26T09:52:32Z",
-        "dns_baseline": {
-          "record": null,
-          "record_id": null
-        }
       }
     }
   },
@@ -87,14 +78,14 @@
     {
       "slot": 3,
       "server": "proxy3.rokko-st.com",
-      "port": 32863,
-      "speed_mbps": 55.95,
+      "port": 37547,
+      "speed_mbps": 76.2,
       "connections": 0,
-      "started_at": "2026-10-26T08:57:18Z",
-      "expires_at": "2026-10-26T09:57:18Z",
-      "updated_at": "2026-10-26T09:52:33Z",
+      "started_at": "2026-10-26T09:52:37Z",
+      "expires_at": "2026-10-26T10:52:37Z",
+      "updated_at": "2026-10-26T09:52:37Z",
       "status": "online"
     }
   ],
-  "updated_at": "2026-10-26T09:52:33Z"
+  "updated_at": "2026-10-26T09:52:37Z"
 }
