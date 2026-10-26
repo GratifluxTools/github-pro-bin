@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-10-26T04:02:41Z",
+  "generated_at": "2026-10-26T04:07:39Z",
   "refresh_seconds": 600,
   "slots": {
     "1": {
@@ -26,13 +26,18 @@
       "port": 46419,
       "pinggy_host": "vozoe-158-23-190-67.run.pinggy-free.link",
       "started_at": "2026-10-26T03:12:29Z",
-      "updated_at": "2026-10-26T04:02:41Z",
+      "updated_at": "2026-10-26T04:07:39Z",
       "expires_at": "2026-10-26T04:12:29Z",
       "speed_mbps": 19.62,
       "connections": 0,
       "dns_baseline": {
         "record": null,
         "record_id": null
+      },
+      "pending": {
+        "run_id": "40267432827",
+        "status": "starting",
+        "updated_at": "2026-10-26T04:07:39Z"
       }
     }
   },
@@ -56,9 +61,9 @@
       "connections": 0,
       "started_at": "2026-10-26T03:12:29Z",
       "expires_at": "2026-10-26T04:12:29Z",
-      "updated_at": "2026-10-26T04:02:41Z",
+      "updated_at": "2026-10-26T04:07:39Z",
       "status": "online"
     }
   ],
-  "updated_at": "2026-10-26T04:02:41Z"
+  "updated_at": "2026-10-26T04:07:39Z"
 }
