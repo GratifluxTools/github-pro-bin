@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-10-27T21:00:36Z",
+  "generated_at": "2026-10-27T21:00:37Z",
   "refresh_seconds": 600,
   "slots": {
     "3": {
@@ -10,7 +10,7 @@
       "port": 41871,
       "pinggy_host": "klesy-20-221-79-33.run.pinggy-free.link",
       "started_at": "2026-10-27T20:05:22Z",
-      "updated_at": "2026-10-27T21:00:36Z",
+      "updated_at": "2026-10-27T21:00:37Z",
       "expires_at": "2026-10-27T21:05:22Z",
       "speed_mbps": 41.48,
       "connections": 0,
@@ -21,7 +21,11 @@
       "pending": {
         "run_id": "40583032617",
         "status": "starting",
-        "updated_at": "2026-10-27T21:00:36Z"
+        "updated_at": "2026-10-27T21:00:36Z",
+        "dns_baseline": {
+          "record": null,
+          "record_id": null
+        }
       }
     }
   },
@@ -34,9 +38,9 @@
       "connections": 0,
       "started_at": "2026-10-27T20:05:22Z",
       "expires_at": "2026-10-27T21:05:22Z",
-      "updated_at": "2026-10-27T21:00:36Z",
+      "updated_at": "2026-10-27T21:00:37Z",
       "status": "online"
     }
   ],
-  "updated_at": "2026-10-27T21:00:36Z"
+  "updated_at": "2026-10-27T21:00:37Z"
 }
