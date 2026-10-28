@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-10-28T12:15:40Z",
+  "generated_at": "2026-10-28T12:20:37Z",
   "refresh_seconds": 600,
   "slots": {
     "3": {
@@ -42,13 +42,18 @@
       "port": 33413,
       "pinggy_host": "nsoff-20-186-238-85.run.pinggy-free.link",
       "started_at": "2026-10-28T11:25:25Z",
-      "updated_at": "2026-10-28T12:15:40Z",
+      "updated_at": "2026-10-28T12:20:37Z",
       "expires_at": "2026-10-28T12:25:25Z",
       "speed_mbps": 39.3,
       "connections": 0,
       "dns_baseline": {
         "record": null,
         "record_id": null
+      },
+      "pending": {
+        "run_id": "40686994466",
+        "status": "starting",
+        "updated_at": "2026-10-28T12:20:37Z"
       }
     }
   },
@@ -72,7 +77,7 @@
       "connections": 0,
       "started_at": "2026-10-28T11:25:25Z",
       "expires_at": "2026-10-28T12:25:25Z",
-      "updated_at": "2026-10-28T12:15:40Z",
+      "updated_at": "2026-10-28T12:20:37Z",
       "status": "online"
     },
     {
@@ -87,5 +92,5 @@
       "status": "online"
     }
   ],
-  "updated_at": "2026-10-28T12:15:40Z"
+  "updated_at": "2026-10-28T12:20:37Z"
 }
