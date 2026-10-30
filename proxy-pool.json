@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-10-30T23:35:11Z",
+  "generated_at": "2026-10-30T23:35:16Z",
   "refresh_seconds": 600,
   "slots": {
     "1": {
@@ -21,10 +21,15 @@
     },
     "2": {
       "run_id": "41145333614",
-      "status": "starting",
+      "status": "online",
       "server": "proxy2.rokko-st.com",
-      "started_at": "2026-10-30T23:35:10Z",
-      "updated_at": "2026-10-30T23:35:11Z",
+      "port": 34591,
+      "pinggy_host": "bmumu-20-236-14-67.run.pinggy-free.link",
+      "started_at": "2026-10-30T23:35:16Z",
+      "updated_at": "2026-10-30T23:35:16Z",
+      "expires_at": "2026-10-31T00:35:16Z",
+      "speed_mbps": 58.96,
+      "connections": 0,
       "dns_baseline": {
         "record": null,
         "record_id": null
@@ -42,7 +47,18 @@
       "expires_at": "2026-10-31T00:15:32Z",
       "updated_at": "2026-10-30T23:25:34Z",
       "status": "online"
+    },
+    {
+      "slot": 2,
+      "server": "proxy2.rokko-st.com",
+      "port": 34591,
+      "speed_mbps": 58.96,
+      "connections": 0,
+      "started_at": "2026-10-30T23:35:16Z",
+      "expires_at": "2026-10-31T00:35:16Z",
+      "updated_at": "2026-10-30T23:35:16Z",
+      "status": "online"
     }
   ],
-  "updated_at": "2026-10-30T23:35:11Z"
+  "updated_at": "2026-10-30T23:35:16Z"
 }
