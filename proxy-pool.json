@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-11-01T15:43:09Z",
+  "generated_at": "2026-11-01T15:48:10Z",
   "refresh_seconds": 600,
   "slots": {
     "1": {
@@ -10,13 +10,18 @@
       "port": 39851,
       "pinggy_host": "sekoz-4-154-135-181.run.pinggy-free.link",
       "started_at": "2026-11-01T14:52:57Z",
-      "updated_at": "2026-11-01T15:43:09Z",
+      "updated_at": "2026-11-01T15:48:10Z",
       "expires_at": "2026-11-01T15:52:57Z",
       "speed_mbps": 58.67,
       "connections": 0,
       "dns_baseline": {
         "record": null,
         "record_id": null
+      },
+      "pending": {
+        "run_id": "41323041121",
+        "status": "starting",
+        "updated_at": "2026-11-01T15:48:10Z"
       }
     },
     "2": {
@@ -45,7 +50,7 @@
       "connections": 0,
       "started_at": "2026-11-01T14:52:57Z",
       "expires_at": "2026-11-01T15:52:57Z",
-      "updated_at": "2026-11-01T15:43:09Z",
+      "updated_at": "2026-11-01T15:48:10Z",
       "status": "online"
     },
     {
@@ -60,5 +65,5 @@
       "status": "online"
     }
   ],
-  "updated_at": "2026-11-01T15:43:09Z"
+  "updated_at": "2026-11-01T15:48:10Z"
 }
