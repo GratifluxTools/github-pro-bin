@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-11-01T01:18:15Z",
+  "generated_at": "2026-11-01T01:23:14Z",
   "refresh_seconds": 600,
   "slots": {
     "1": {
@@ -26,13 +26,18 @@
       "port": 41905,
       "pinggy_host": "poith-52-141-64-243.run.pinggy-free.link",
       "started_at": "2026-11-01T00:28:03Z",
-      "updated_at": "2026-11-01T01:18:15Z",
+      "updated_at": "2026-11-01T01:23:14Z",
       "expires_at": "2026-11-01T01:28:03Z",
       "speed_mbps": 37.68,
       "connections": 0,
       "dns_baseline": {
         "record": null,
         "record_id": null
+      },
+      "pending": {
+        "run_id": "41260867024",
+        "status": "starting",
+        "updated_at": "2026-11-01T01:23:14Z"
       }
     }
   },
@@ -56,9 +61,9 @@
       "connections": 0,
       "started_at": "2026-11-01T00:28:03Z",
       "expires_at": "2026-11-01T01:28:03Z",
-      "updated_at": "2026-11-01T01:18:15Z",
+      "updated_at": "2026-11-01T01:23:14Z",
       "status": "online"
     }
   ],
-  "updated_at": "2026-11-01T01:18:15Z"
+  "updated_at": "2026-11-01T01:23:14Z"
 }
