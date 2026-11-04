@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-11-04T12:24:13Z",
+  "generated_at": "2026-11-04T12:24:14Z",
   "refresh_seconds": 600,
   "slots": {
     "2": {
@@ -10,7 +10,7 @@
       "port": 40525,
       "pinggy_host": "tvyov-135-232-232-80.run.pinggy-free.link",
       "started_at": "2026-11-04T11:29:01Z",
-      "updated_at": "2026-11-04T12:24:13Z",
+      "updated_at": "2026-11-04T12:24:14Z",
       "expires_at": "2026-11-04T12:29:01Z",
       "speed_mbps": 74.7,
       "connections": 0,
@@ -21,7 +21,11 @@
       "pending": {
         "run_id": "41828943066",
         "status": "starting",
-        "updated_at": "2026-11-04T12:24:13Z"
+        "updated_at": "2026-11-04T12:24:13Z",
+        "dns_baseline": {
+          "record": null,
+          "record_id": null
+        }
       }
     }
   },
@@ -34,9 +38,9 @@
       "connections": 0,
       "started_at": "2026-11-04T11:29:01Z",
       "expires_at": "2026-11-04T12:29:01Z",
-      "updated_at": "2026-11-04T12:24:13Z",
+      "updated_at": "2026-11-04T12:24:14Z",
       "status": "online"
     }
   ],
-  "updated_at": "2026-11-04T12:24:13Z"
+  "updated_at": "2026-11-04T12:24:14Z"
 }
