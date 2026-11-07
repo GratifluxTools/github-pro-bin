@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-11-07T17:00:09Z",
+  "generated_at": "2026-11-07T17:05:00Z",
   "refresh_seconds": 600,
   "slots": {
     "1": {
@@ -10,13 +10,18 @@
       "port": 44173,
       "pinggy_host": "giluc-172-170-189-242.run.pinggy-free.link",
       "started_at": "2026-11-07T16:09:51Z",
-      "updated_at": "2026-11-07T17:00:09Z",
+      "updated_at": "2026-11-07T17:05:00Z",
       "expires_at": "2026-11-07T17:09:51Z",
       "speed_mbps": 46.98,
       "connections": 0,
       "dns_baseline": {
         "record": null,
         "record_id": null
+      },
+      "pending": {
+        "run_id": "42394503012",
+        "status": "starting",
+        "updated_at": "2026-11-07T17:05:00Z"
       }
     }
   },
@@ -29,9 +34,9 @@
       "connections": 0,
       "started_at": "2026-11-07T16:09:51Z",
       "expires_at": "2026-11-07T17:09:51Z",
-      "updated_at": "2026-11-07T17:00:09Z",
+      "updated_at": "2026-11-07T17:05:00Z",
       "status": "online"
     }
   ],
-  "updated_at": "2026-11-07T17:00:09Z"
+  "updated_at": "2026-11-07T17:05:00Z"
 }
