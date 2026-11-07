@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-11-07T10:33:13Z",
+  "generated_at": "2026-11-07T10:38:09Z",
   "refresh_seconds": 600,
   "slots": {
     "1": {
@@ -10,13 +10,18 @@
       "port": 44453,
       "pinggy_host": "ticdv-172-182-225-196.run.pinggy-free.link",
       "started_at": "2026-11-07T09:42:58Z",
-      "updated_at": "2026-11-07T10:33:13Z",
+      "updated_at": "2026-11-07T10:38:09Z",
       "expires_at": "2026-11-07T10:42:58Z",
       "speed_mbps": 49.54,
       "connections": 0,
       "dns_baseline": {
         "record": null,
         "record_id": null
+      },
+      "pending": {
+        "run_id": "42364775469",
+        "status": "starting",
+        "updated_at": "2026-11-07T10:38:09Z"
       }
     }
   },
@@ -29,9 +34,9 @@
       "connections": 0,
       "started_at": "2026-11-07T09:42:58Z",
       "expires_at": "2026-11-07T10:42:58Z",
-      "updated_at": "2026-11-07T10:33:13Z",
+      "updated_at": "2026-11-07T10:38:09Z",
       "status": "online"
     }
   ],
-  "updated_at": "2026-11-07T10:33:13Z"
+  "updated_at": "2026-11-07T10:38:09Z"
 }
