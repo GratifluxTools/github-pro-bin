@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-11-12T12:58:22Z",
+  "generated_at": "2026-11-12T13:08:26Z",
   "refresh_seconds": 600,
   "slots": {
     "2": {
@@ -10,9 +10,9 @@
       "port": 38013,
       "pinggy_host": "xhram-40-77-124-144.run.pinggy-free.link",
       "started_at": "2026-11-12T12:28:13Z",
-      "updated_at": "2026-11-12T12:58:22Z",
+      "updated_at": "2026-11-12T13:08:26Z",
       "expires_at": "2026-11-12T13:28:13Z",
-      "speed_mbps": 48.83,
+      "speed_mbps": 42.83,
       "connections": 0,
       "dns_baseline": {
         "record": null,
@@ -25,13 +25,13 @@
       "slot": 2,
       "server": "proxy2.rokko-st.com",
       "port": 38013,
-      "speed_mbps": 48.83,
+      "speed_mbps": 42.83,
       "connections": 0,
       "started_at": "2026-11-12T12:28:13Z",
       "expires_at": "2026-11-12T13:28:13Z",
-      "updated_at": "2026-11-12T12:58:22Z",
+      "updated_at": "2026-11-12T13:08:26Z",
       "status": "online"
     }
   ],
-  "updated_at": "2026-11-12T12:58:22Z"
+  "updated_at": "2026-11-12T13:08:26Z"
 }
