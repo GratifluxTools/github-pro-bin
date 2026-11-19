@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-11-19T07:52:59Z",
+  "generated_at": "2026-11-19T07:53:01Z",
   "refresh_seconds": 600,
   "slots": {
     "1": {
@@ -10,7 +10,7 @@
       "port": 42235,
       "pinggy_host": "zbino-3-42-157-128.run.pinggy-free.link",
       "started_at": "2026-11-19T06:57:48Z",
-      "updated_at": "2026-11-19T07:52:59Z",
+      "updated_at": "2026-11-19T07:53:01Z",
       "expires_at": "2026-11-19T07:57:48Z",
       "speed_mbps": 62.47,
       "connections": 0,
@@ -21,7 +21,11 @@
       "pending": {
         "run_id": "44483017813",
         "status": "starting",
-        "updated_at": "2026-11-19T07:52:59Z"
+        "updated_at": "2026-11-19T07:52:59Z",
+        "dns_baseline": {
+          "record": null,
+          "record_id": null
+        }
       }
     }
   },
@@ -34,9 +38,9 @@
       "connections": 0,
       "started_at": "2026-11-19T06:57:48Z",
       "expires_at": "2026-11-19T07:57:48Z",
-      "updated_at": "2026-11-19T07:52:59Z",
+      "updated_at": "2026-11-19T07:53:01Z",
       "status": "online"
     }
   ],
-  "updated_at": "2026-11-19T07:52:59Z"
+  "updated_at": "2026-11-19T07:53:01Z"
 }
