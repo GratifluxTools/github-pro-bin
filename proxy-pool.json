@@ -1,8 +1,17 @@
 {
   "schema": 1,
-  "generated_at": "2026-11-27T06:59:13Z",
+  "generated_at": "2026-11-27T23:42:41Z",
   "refresh_seconds": 600,
-  "slots": {},
+  "slots": {
+    "1": {
+      "run_id": "46083988127",
+      "status": "starting",
+      "server": "proxy1.rokko-st.com",
+      "started_at": "2026-11-27T23:42:41Z",
+      "updated_at": "2026-11-27T23:42:41Z",
+      "dns_baseline": null
+    }
+  },
   "proxies": [],
-  "updated_at": "2026-11-27T06:59:13Z"
+  "updated_at": "2026-11-27T23:42:41Z"
 }
